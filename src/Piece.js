@@ -52,8 +52,8 @@ export default class Piece extends React.Component{
     let type = this.imageGetter(this.props.type)
     let rend = type === '' ? null : <img className="piece"
                                      src={this.imageGetter(this.props.type)}
-                                     alt="chess piece"
-                                     onDragStart={this.props.actionStart}
+                                     alt={this.props.coords}
+                                     onDragStart={ () => this.props.actionStart(this.props.coords)}
                                      onDrop={this.props.actionEnd}
                                      draggable="true"
                                      />
