@@ -89,6 +89,8 @@ export default class Board extends React.Component{
 
   actionSource = (e) => {
     //light up squares here
+
+    //
     let piece = this.state.board[e[0]][e[1]]
     console.log(piece)
     this.setState({
