@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Opponent from './Opponent'
+import Board from './Board.js'
 import User from './User'
 
 class Room extends Component {
@@ -23,7 +24,7 @@ class Room extends Component {
     return  (
       <div>
         <Opponent />
-        <h3>Place Board here.</h3>
+        <Board />
         <User checkTurnOperator={this.turnOperator} turn={this.state.activePlayer}/>
       </div>
   )}
