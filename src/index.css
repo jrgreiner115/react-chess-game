@@ -3,3 +3,11 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.room {
+  border: 1px solid black;
+}
+
+p {
+  text-align: right;
+}
