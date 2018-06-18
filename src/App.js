@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Room from './Room.js'
 
 class App extends Component {
   state: {
@@ -15,7 +16,6 @@ class App extends Component {
         <h1>U PLAY CHESS?????</h1>
         <div className='room'>
           <Room />
-          <>Here's the room.</h3>
         </div>
       </div>
     );
