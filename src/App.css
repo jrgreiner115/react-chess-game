@@ -15,6 +15,10 @@
   background-color:#C1A05B;
 }
 
+.possibleMove{
+  background-color:yellow;
+}
+
 .piece{
   height:59px;
   width:59px;

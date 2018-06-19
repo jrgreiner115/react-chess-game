@@ -8,17 +8,18 @@ export default class Board extends React.Component{
 
     this.state = {
       board:[
-        ['rookB','bishopB','nightB','queenB','kingB','nightB','bishopB','rookB'],
+        ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
         ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
-        ['rookW','bishopW','nightW','queenW','kingW','nightW','bishopW','rookW']
+        ['rookW','bishopW','knightW','queenW','kingW','knightW','bishopW','rookW']
       ],
       selectedPiece: null,
       selectedCoords: null,
+      playerColor: 'W'
     }
 
   }
@@ -26,14 +27,14 @@ export default class Board extends React.Component{
   reset(){
     this.setState({
       board:[
-        ['rookB','bishopB','nightB','queenB','kingB','nightB','bishopB','rookB'],
+        ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
         ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
-        ['rookW','bishopW','nightW','queenW','kingW','nightW','bishopW','rookW']
+        ['rookW','bishopW','knightW','queenW','kingW','knightW','bishopW','rookW']
       ]
     })
   }
@@ -53,7 +54,7 @@ export default class Board extends React.Component{
 
                   <Piece type={this.state.board[x][y]}
                          coords={`${x}`+y}
-                         actionStart={this.actionSource}
+                         actionStart={this.piecePickedUp}
                          actionEnd={this.actionTarget}/>
                 </td>)
       }
@@ -87,16 +88,86 @@ export default class Board extends React.Component{
     }
   }
 
-  actionSource = (e) => {
+  lightUp(){
+
+  }
+
+  pieceLogic(piece,coords){
+    let short = piece.substring(0,2)
+    switch(short){
+      case "pa":
+        this.pawnLogic(coords)
+        break;
+
+    }
+  }
+
+  //logic helpers
+  isEmpty(x,y){
+    console.log('empty')
+    return this.state.board[x][y] === ""
+  }
+
+  outOfBoundsCheck(x,y){
+    console.log('outabounds')
+    if (x > 7 || y > 7){
+      return false
+    }
+    if (x < 0 || y < 0){
+      return false
+    }
+    return true
+  }
+
+  isOwnPieceCheck(x,y){
+    console.log('ownpiece')
+    return !(this.state.board[x][y].slice(-1) === this.board.playerColor)
+  }
+
+  moveAndEat(x,y){
+    return this.outOfBoundsCheck(x,y) && this.isOwnPieceCheck(x,y)
+  }
+
+  pawnMoveCheck(x,y){
+    return (this.outOfBoundsCheck(x,y) && this.isEmpty(x,y))
+  }
+
+  //logic helpers
+
+
+
+
+  pawnLogic(coords){
+    let x = parseInt(coords[0])
+    let y = parseInt(coords[1])
+    let movesArray = []
+        console.log(x,y)
+    //moves 1 forward without eating
+    if (this.pawnMoveCheck(x,y+1)){
+      movesArray.push([x,y+1])
+    }
+
+    //moves 2 forward if at starting
+    if (x === 6 && this.pawnMoveCheck(x,y+2)){
+      movesArray.push([x,y+2])
+    }
+
+
+    this.lightUp(movesArray)
+  }
+
+
+
+  piecePickedUp = (coords) => {
     //light up squares here
 
     //
-    let piece = this.state.board[e[0]][e[1]]
-    console.log(piece)
+    let piece = this.state.board[coords[0]][coords[1]]
     this.setState({
       selectedPiece: piece,
-      selectedCoords: e,
+      selectedCoords: coords,
     })
+    this.pieceLogic(piece,coords)
   }
 
   dragOver(e){

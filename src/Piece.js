@@ -20,7 +20,7 @@ export default class Piece extends React.Component{
     switch(type){
       case 'pawnB':
         return pawnB
-      case 'nightB':
+      case 'knightB':
         return knightB
       case 'bishopB':
         return bishopB
@@ -33,7 +33,7 @@ export default class Piece extends React.Component{
 
       case 'pawnW':
         return pawnW
-      case 'nightW':
+      case 'knightW':
         return knightW
       case 'bishopW':
         return bishopW
