@@ -11,7 +11,7 @@ export default class Board extends React.Component{
         ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
         ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
         ['','','','','','','',''],
-        ['','','','','','','',''],
+        ['','','','','knightW','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
@@ -78,28 +78,12 @@ export default class Board extends React.Component{
     return board
   }
 
-  lightUp(){
 
-  }
 
-  pieceLogic(piece,coords){
-    let y = parseInt(coords[0])
-    let x = parseInt(coords[1])
-    let short = piece.substring(0,2)
-    switch(short){
-      case "pa":
-        this.pawnLogic(x,y)
-        break;
-      case "ro":
-        this.rookLogic(x,y)
-        break;
-      case "bi":
-        this.bishopLogic(x,y)
-        break;
-    }
-  }
 
   //logic helpers
+  //logic helpers
+
   isEmpty(x,y){
     return this.state.board[y][x] === ''
   }
@@ -131,6 +115,10 @@ export default class Board extends React.Component{
     return (this.outOfBoundsCheck(x,y) && this.isEmpty(x,y))
   }
 
+
+
+  //destructive helpers
+  //destructive helpers
   emptyCommit(x,y,arr){
     let boo = this.outOfBoundsCheck(x,y) && this.isEmpty(x,y)
     if (boo){
@@ -147,10 +135,61 @@ export default class Board extends React.Component{
     return boo
   }
 
+
+  //possible moves loops, bishop, rook, queen
+  emptyLoop(x,y,xdelta,ydelta,movesArray){
+    let i=1
+    while( i>0 ){
+      if (!this.emptyCommit(this.loopHelper(x,xdelta,i),this.loopHelper(y,ydelta,i),movesArray)){
+        this.eatCommit(this.loopHelper(x,xdelta,i),this.loopHelper(y,ydelta,i),movesArray)
+        i = -1
+      }
+      i++;
+    }
+  }
+  loopHelper(x,delta,i){
+    if (delta == "+"){
+      return x + i
+    }
+    if (delta == "-"){
+      return x - i
+    }
+    if (delta == ""){
+      return x
+    }
+  }
+
+  kingHandler(x,y,xdelta,ydelta,movesArray){
+    this.eatCommit(this.loopHelper(x,xdelta,1),this.loopHelper(y,ydelta,1),movesArray)
+  }
+  
   //logic helpers
 
-
-
+  pieceLogic(piece,coords){
+    let y = parseInt(coords[0])
+    let x = parseInt(coords[1])
+    let short = piece.substring(0,2)
+    switch(short){
+      case "pa":
+        this.pawnLogic(x,y)
+        break;
+      case "ro":
+        this.rookLogic(x,y)
+        break;
+      case "bi":
+        this.bishopLogic(x,y)
+        break;
+      case "qu":
+        this.queenLogic(x,y)
+        break;
+      case "ki":
+        this.kingLogic(x,y)
+        break;
+      case "kn":
+        this.knightLogic(x,y)
+        break;
+    }
+  }
 
   pawnLogic(x,y){
     //moves to make
@@ -182,43 +221,13 @@ export default class Board extends React.Component{
   }
 
   rookLogic(x,y){
-    let i = 1
+
     let movesArray = []
 
-    while( i>0 ){
-      if (!this.emptyCommit(x,y-i,movesArray)){
-        this.eatCommit(x,y-i,movesArray)
-        i = -1
-      }
-      i++;
-    }
-
-    i=1;
-    while( i>0 ){
-      if (!this.emptyCommit(x,y+i,movesArray)){
-        this.eatCommit(x,y+i,movesArray)
-        i = -1
-      }
-      i++;
-    }
-
-    i=1;
-    while( i>0 ){
-      if (!this.emptyCommit(x+i,y,movesArray)){
-        this.eatCommit(x+i,y,movesArray)
-        i = -1
-      }
-      i++;
-    }
-
-    i=1;
-    while( i>0 ){
-      if (!this.emptyCommit(x-i,y,movesArray)){
-        this.eatCommit(x-i,y,movesArray)
-        i = -1
-      }
-      i++;
-    }
+    this.emptyLoop(x,y,'+','',movesArray)
+    this.emptyLoop(x,y,'','+',movesArray)
+    this.emptyLoop(x,y,'-','',movesArray)
+    this.emptyLoop(x,y,'','-',movesArray)
 
     //moves committer
     this.setState({
@@ -227,43 +236,69 @@ export default class Board extends React.Component{
   }
 
   bishopLogic(x,y){
-    let i = 1
     let movesArray = []
 
-    while( i>0 ){
-      if (!this.emptyCommit(x-i,y-i,movesArray)){
-        this.eatCommit(x-i,y-i,movesArray)
-        i = -1
-      }
-      i++;
-    }
-    i=1
-
-    while( i>0 ){
-      if (!this.emptyCommit(x+i,y-i,movesArray)){
-        this.eatCommit(x+i,y-i,movesArray)
-        i = -1
-      }
-      i++;
-    }
-    i=1
-    while( i>0 ){
-      if (!this.emptyCommit(x-i,y+i,movesArray)){
-        this.eatCommit(x-i,y+i,movesArray)
-        i = -1
-      }
-      i++;
-    }
-    i=1
-    while( i>0 ){
-      if (!this.emptyCommit(x+i,y+i,movesArray)){
-        this.eatCommit(x+i,y+i,movesArray)
-        i = -1
-      }
-      i++;
-    }
+    this.emptyLoop(x,y,'+','+',movesArray)
+    this.emptyLoop(x,y,'+','-',movesArray)
+    this.emptyLoop(x,y,'-','+',movesArray)
+    this.emptyLoop(x,y,'-','-',movesArray)
 
     //moves committer
+    this.setState({
+      lightUp: movesArray
+    })
+  }
+
+  queenLogic(x,y){
+    let movesArray = []
+
+    this.emptyLoop(x,y,'+','+',movesArray)
+    this.emptyLoop(x,y,'+','-',movesArray)
+    this.emptyLoop(x,y,'-','+',movesArray)
+    this.emptyLoop(x,y,'-','-',movesArray)
+    this.emptyLoop(x,y,'+','',movesArray)
+    this.emptyLoop(x,y,'','+',movesArray)
+    this.emptyLoop(x,y,'-','',movesArray)
+    this.emptyLoop(x,y,'','-',movesArray)
+
+
+
+    //moves committer
+    this.setState({
+      lightUp: movesArray
+    })
+  }
+
+  kingLogic(x,y){
+    let movesArray = []
+
+    this.kingHandler(x,y,'+','',movesArray)
+    this.kingHandler(x,y,'+','+',movesArray)
+    this.kingHandler(x,y,'','+',movesArray)
+    this.kingHandler(x,y,'-','',movesArray)
+    this.kingHandler(x,y,'-','-',movesArray)
+    this.kingHandler(x,y,'','-',movesArray)
+    this.kingHandler(x,y,'+','-',movesArray)
+    this.kingHandler(x,y,'-','+',movesArray)
+
+    //moves committer
+    this.setState({
+      lightUp: movesArray
+    })
+  }
+
+  knightLogic(x,y){
+    let movesArray = []
+
+    this.eatCommit(x-2,y-1,movesArray)
+    this.eatCommit(x-2,y+1,movesArray)
+    this.eatCommit(x+2,y-1,movesArray)
+    this.eatCommit(x+2,y+1,movesArray)
+    this.eatCommit(x-1,y-2,movesArray)
+    this.eatCommit(x-1,y+2,movesArray)
+    this.eatCommit(x+1,y-2,movesArray)
+    this.eatCommit(x+1,y+2,movesArray)
+
     this.setState({
       lightUp: movesArray
     })
