@@ -19,7 +19,8 @@ export default class Board extends React.Component{
       ],
       selectedPiece: null,
       selectedCoords: null,
-      playerColor: 'W'
+      playerColor: 'W',
+      lightUp: []
     }
 
   }
@@ -39,6 +40,11 @@ export default class Board extends React.Component{
     })
   }
 
+  classHelp = (x,y) => {
+    let color = this.state.lightUp.includes(`${x}`+y) ? 'yellow' : ( ((y+x)%2 === 0) ? 'white' : 'black')
+    return 'tile dropzone ' + color
+  }
+
   makeBoard(){
 
     let board = [];
@@ -48,7 +54,7 @@ export default class Board extends React.Component{
       let row = []
       for (let y = 0; y<8;y++){
         row.push( <td id={`${x}`+y}
-                     className={'tile dropzone ' + ( ((y+x)%2 === 0) ? 'white' : 'black')}
+                     className={ this.classHelp(x,y) }
                      onDrop={ this.actionTarget}
                      onDragOver={this.dragOver}>
 
@@ -86,6 +92,10 @@ export default class Board extends React.Component{
         board: board
       })
     }
+
+    this.setState({
+      lightUp: []
+    })
   }
 
   lightUp(){
@@ -93,10 +103,12 @@ export default class Board extends React.Component{
   }
 
   pieceLogic(piece,coords){
+    let y = parseInt(coords[0])
+    let x = parseInt(coords[1])
     let short = piece.substring(0,2)
     switch(short){
       case "pa":
-        this.pawnLogic(coords)
+        this.pawnLogic(x,y)
         break;
 
     }
@@ -104,12 +116,10 @@ export default class Board extends React.Component{
 
   //logic helpers
   isEmpty(x,y){
-    console.log('empty')
-    return this.state.board[x][y] === ""
+    return this.state.board[y][x] === ''
   }
 
   outOfBoundsCheck(x,y){
-    console.log('outabounds')
     if (x > 7 || y > 7){
       return false
     }
@@ -120,15 +130,22 @@ export default class Board extends React.Component{
   }
 
   isOwnPieceCheck(x,y){
-    console.log('ownpiece')
-    return !(this.state.board[x][y].slice(-1) === this.board.playerColor)
+    return !(this.state.board[y][x].slice(-1) === this.state.playerColor)
   }
 
-  moveAndEat(x,y){
+  eatCheck(x,y){
     return this.outOfBoundsCheck(x,y) && this.isOwnPieceCheck(x,y)
   }
 
+  pawnEatCheck(x,y){
+    return this.outOfBoundsCheck(x,y) && this.isOwnPieceCheck(x,y) && !this.isEmpty(x,y)
+  }
+
   pawnMoveCheck(x,y){
+    console.log("movecheck", x, y)
+    console.log("bounds", this.outOfBoundsCheck(x,y))
+    console.log("empty", this.isEmpty(x,y))
+
     return (this.outOfBoundsCheck(x,y) && this.isEmpty(x,y))
   }
 
@@ -137,23 +154,38 @@ export default class Board extends React.Component{
 
 
 
-  pawnLogic(coords){
-    let x = parseInt(coords[0])
-    let y = parseInt(coords[1])
+  pawnLogic(x,y){
+    //moves to make
     let movesArray = []
-        console.log(x,y)
+
     //moves 1 forward without eating
-    if (this.pawnMoveCheck(x,y+1)){
-      movesArray.push([x,y+1])
+    if (this.pawnMoveCheck(x,y-1)){
+      console.log('move1 is go')
+      movesArray.push(`${y-1}` + x)
     }
 
-    //moves 2 forward if at starting
-    if (x === 6 && this.pawnMoveCheck(x,y+2)){
-      movesArray.push([x,y+2])
+    //moves 2 forward if at starting, no eat
+    if (y === 6 && this.pawnMoveCheck(x,y-2)){
+      console.log('move2 is go')
+      movesArray.push(`${y-2}` + x)
     }
 
+    //diagonal eating
+    if (this.pawnEatCheck(x-1,y-1)){
+      console.log('eat left is go')
+      movesArray.push(`${y-1}` + (x-1))
+    }
+    if (this.pawnEatCheck(x+1,y-1)){
+      console.log('eat right is go')
+      movesArray.push(`${y-1}` + (x+1))
+    }
 
-    this.lightUp(movesArray)
+    //moves committer
+    console.log(movesArray)
+    this.setState({
+      lightUp: movesArray
+    })
+
   }
 
 
