@@ -226,7 +226,48 @@ export default class Board extends React.Component{
     })
   }
 
+  bishopLogic(x,y){
+    let i = 1
+    let movesArray = []
 
+    while( i>0 ){
+      if (!this.emptyCommit(x-i,y-i,movesArray)){
+        this.eatCommit(x-i,y-i,movesArray)
+        i = -1
+      }
+      i++;
+    }
+    i=1
+
+    while( i>0 ){
+      if (!this.emptyCommit(x+i,y-i,movesArray)){
+        this.eatCommit(x+i,y-i,movesArray)
+        i = -1
+      }
+      i++;
+    }
+    i=1
+    while( i>0 ){
+      if (!this.emptyCommit(x-i,y+i,movesArray)){
+        this.eatCommit(x-i,y+i,movesArray)
+        i = -1
+      }
+      i++;
+    }
+    i=1
+    while( i>0 ){
+      if (!this.emptyCommit(x+i,y+i,movesArray)){
+        this.eatCommit(x+i,y+i,movesArray)
+        i = -1
+      }
+      i++;
+    }
+
+    //moves committer
+    this.setState({
+      lightUp: movesArray
+    })
+  }
 
   piecePickedUp = (coords) => {
     //light up squares here
