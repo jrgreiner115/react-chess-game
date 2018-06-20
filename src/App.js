@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Room from './Room.js'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import Lobby from './Lobby.js'
+import Login from './Login.js'
 import WaitingRoom from './WaitingRoom'
 
 class App extends Component {
@@ -29,11 +29,12 @@ class App extends Component {
               component={WaitingRoom}
             />
             <Route
-              path='/login'
+              path='/'
+              exact
               render={() =>{ return this.state.hasUser ?
                 (<Redirect push
-                to='/waiting-room' />)
-                 : (<Lobby changeToWaitingRoom={this.changeToWaitingRoom}
+                to='/lobby' />)
+                 : (<Login changeToWaitingRoom={this.changeToWaitingRoom}
                  />)
                }}
             />
