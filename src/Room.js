@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Opponent from './Opponent'
 import Board from './Board.js'
 import User from './User'
+import Board from './Board'
 
 class Room extends Component {
   constructor(props){

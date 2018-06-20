@@ -20,7 +20,7 @@ export default class Piece extends React.Component{
     switch(type){
       case 'pawnB':
         return pawnB
-      case 'nightB':
+      case 'knightB':
         return knightB
       case 'bishopB':
         return bishopB
@@ -33,7 +33,7 @@ export default class Piece extends React.Component{
 
       case 'pawnW':
         return pawnW
-      case 'nightW':
+      case 'knightW':
         return knightW
       case 'bishopW':
         return bishopW
@@ -50,14 +50,13 @@ export default class Piece extends React.Component{
 
   render(){
     let type = this.imageGetter(this.props.type)
-    let rend = type === '' ? null : <img className="piece"
+    let boo = this.props.playerColor === this.props.type.slice(-1)
+    return <img className="piece"
                                      src={this.imageGetter(this.props.type)}
                                      alt={this.props.coords}
                                      onDragStart={ () => this.props.actionStart(this.props.coords)}
-                                     onDrop={this.props.actionEnd}
-                                     draggable="true"
+                                     draggable={boo}
                                      />
-    return rend
   }
 
 }
