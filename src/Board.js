@@ -11,7 +11,7 @@ export default class Board extends React.Component{
         ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
         ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
         ['','','','','','','',''],
-        ['','','','','knightW','','',''],
+        ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
@@ -22,8 +22,38 @@ export default class Board extends React.Component{
       playerColor: 'W',
       lightUp: []
     }
-
   }
+
+
+  componentDidMount(){
+    this.blackFlip()
+  }
+
+  blackFlip(){
+    let flipped = []
+    for (let i of this.state.board){
+      flipped.push(i.reverse())
+    }
+    this.setState({
+      board: flipped.reverse(),
+      playerColor: 'B'
+    })
+  }
+
+  blackTranslator(oldCoords){
+
+
+//YET TO TEST
+//YET TO TEST
+//YET TO TEST
+//YET TO TEST
+//YET TO TEST
+//YET TO TEST
+
+    return `${7 - parseInt(oldCoords[0])}` + (7 - parseInt(oldCoords[1]))
+  }
+
+
 
   reset(){
     this.setState({
@@ -162,7 +192,7 @@ export default class Board extends React.Component{
   kingHandler(x,y,xdelta,ydelta,movesArray){
     this.eatCommit(this.loopHelper(x,xdelta,1),this.loopHelper(y,ydelta,1),movesArray)
   }
-  
+
   //logic helpers
 
   pieceLogic(piece,coords){
@@ -344,14 +374,30 @@ export default class Board extends React.Component{
       let board = this.state.board
       board[target[0]][target[1]] = piece;
       board[coords[0]][coords[1]] = ''
+
       this.setState({
         board: board
       })
+
+      //translates for black board cuz its flipped
+      // target = new pos
+      // coords = old pos
+      if (this.state.playerColor === 'B'){
+        target = this.blackTranslator(target)
+        coords = this.blackTranslator(coords)
+      }
+
+
     }
+    //execution code ends
 
     this.setState({
       lightUp: []
     })
+
+
+
+
   }
 
   dragOver(e){
