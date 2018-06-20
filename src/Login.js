@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Adapter from './services/adapter';
 
-class Lobby extends Component {
+class Login extends Component {
   state ={
     name: "",
     hasUser: false
@@ -37,4 +37,4 @@ class Lobby extends Component {
   }
 }
 
-export default Lobby
+export default Login
