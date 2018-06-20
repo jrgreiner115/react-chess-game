@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
-import Board from './Board.js'
 import Room from './Room.js'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import Lobby from './Lobby.js'
+import WaitingRoom from './WaitingRoom'
 
 class App extends Component {
-  state: {
-    rooms: []
+  state = {
+    rooms: [],
+    hasUser: false
+  }
+  changeToWaitingRoom = () => {
+    this.setState({
+      hasUser:true
+    })
   }
   render() {
     return (
@@ -13,9 +21,27 @@ class App extends Component {
         <div>
           <p>login/out</p>
         </div>
-        <h1>U PLAY CHESS?????</h1>
+        <h1>ChessMaster</h1>
         <div className='room'>
-          <Room />
+          <Switch>
+            <Route
+              path='/waiting-room'
+              component={WaitingRoom}
+            />
+            <Route
+              path='/login'
+              render={() =>{ return this.state.hasUser ?
+                (<Redirect push
+                to='/waiting-room' />)
+                 : (<Lobby changeToWaitingRoom={this.changeToWaitingRoom}
+                 />)
+               }}
+            />
+            <Route
+              path='/play'
+              component={Room}
+            />
+          </Switch>
         </div>
       </div>
     );
