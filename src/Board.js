@@ -1,6 +1,7 @@
 import React from 'react';
 import Piece from './Piece.js'
-
+import { ActionCable } from 'react-actioncable-provider'
+import Adapter from './services/adapter'
 export default class Board extends React.Component{
 
   constructor(props){
@@ -405,8 +406,9 @@ export default class Board extends React.Component{
   }
 
   render(){
-    return(<div>
 
+    return(<div>
+      <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
       <div id="gameBoard">
         { this.makeBoard() }
       </div>

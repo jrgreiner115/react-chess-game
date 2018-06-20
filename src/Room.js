@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Opponent from './Opponent'
-import User from './User'
-import Board from './Board'
+import Opponent from './Opponent';
+import User from './User';
+import Board from './Board';
+import Adapter from './services/adapter';
 
 class Room extends Component {
   constructor(props){
@@ -11,6 +12,13 @@ class Room extends Component {
       // THIS BOOLEAN IS CONFUSING BUT EASIER THAN A TEXT MATCH, MAYBE? WHITE IS TRUE, BLACK IS FALSE. GAME STARTS W WHITE.
       activePlayer: true
     }
+  }
+
+  componentDidMount = () => {
+    // if Adapter.gameId === 0 || Adapter.gameId % 2 === 0
+    // Adapter.createGame()
+    // else
+      Adapter.getGame()
   }
 
 
@@ -25,7 +33,6 @@ class Room extends Component {
       <div>
         <Opponent />
         <Board />
-        <h3>Place Board here.</h3>
         <User checkTurnOperator={this.turnOperator} turn={this.state.activePlayer}/>
       </div>
   )}

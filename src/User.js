@@ -12,7 +12,6 @@ class User extends Component {
 
 
   render() {
-    console.log("state is", this.state);
     return (
       <div>
         {this.state.activePlayer ? <p>It's Your Turn.</p>: <p>Opponent's Turn.</p>}
