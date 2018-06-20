@@ -1,6 +1,7 @@
 import React from 'react';
 import Piece from './Piece.js'
-import {ActionCable} from 'react-actionable-provider'
+import { ActionCable } from 'react-actioncable-provider'
+import Adapter from './services/adapter'
 export default class Board extends React.Component{
 
   constructor(props){
@@ -162,7 +163,7 @@ export default class Board extends React.Component{
   kingHandler(x,y,xdelta,ydelta,movesArray){
     this.eatCommit(this.loopHelper(x,xdelta,1),this.loopHelper(y,ydelta,1),movesArray)
   }
-  
+
   //logic helpers
 
   pieceLogic(piece,coords){
@@ -347,6 +348,7 @@ export default class Board extends React.Component{
       this.setState({
         board: board
       })
+      Adapter.createMove({previousPosition: "11", newPosition: "44"})
     }
 
     this.setState({
@@ -359,8 +361,9 @@ export default class Board extends React.Component{
   }
 
   render(){
-    return(<div>
 
+    return(<div>
+      <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
       <div id="gameBoard">
         { this.makeBoard() }
       </div>

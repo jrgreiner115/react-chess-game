@@ -1,13 +1,13 @@
 const API = `http://localhost:3001/games`
 const MOVES = `http://localhost:3001/moves`
-
+let gameId = 0
 const headers = {
   Accepts: 'application/json',
   'Content-Type': 'application/json'
 }
 
-const updateBoard = (gameId, boardObj) => {
-  return fetch(`${API}/${gameId}`, {
+const updateBoard = (game_Id, boardObj) => {
+  return fetch(`${API}/${game_Id}`, {
     method: 'PATCH',
     headers,
     body: JSON.stringify({current_game_board: boardObj})
@@ -22,15 +22,20 @@ const createMove = (state) => {
   return fetch(`${MOVES}`, {
     method: 'POST',
     headers,
-    body: JSON.stringify({board_id: 1, previous_position: state.previousPosition, new_position: state.newPosition})
+    body: JSON.stringify({game_id: gameId, previous_position: state.previousPosition, new_position: state.newPosition})
   })
 }
 
-const createBoard = (boardObj) => {
+const createGame = () => {
   return fetch(`${API}/`, {
     method: 'POST',
-    headers,
-    body: {current_game_board: (JSON.stringify(boardObj))}
-  }).then(resp => resp.json()).then(json => console.log(json))
+    headers }).then(resp => resp.json())
+    .then(json => gameId = json.id)
+    .then(json => console.log(gameId))
 }
-export default {updateBoard, fetchBoard, createBoard, createMove};
+
+const getGame = () => {
+  return fetch(`${API}/${gameId}`).then(resp => resp.json()).then(json => console.log(json))
+}
+
+export default {updateBoard, fetchBoard, createGame, createMove, gameId, getGame};
