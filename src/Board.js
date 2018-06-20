@@ -1,6 +1,6 @@
 import React from 'react';
 import Piece from './Piece.js'
-
+import {ActionCable} from 'react-actionable-provider'
 export default class Board extends React.Component{
 
   constructor(props){
