@@ -12,7 +12,8 @@ class App extends Component {
     hasUser: false,
     currentUserId: null,
     hasCompleteGame: false,
-    playingAsBlackPlayer: false
+    playingAsBlackPlayer: false,
+    currentGameId: null
   }
   changeToWaitingRoom = (state) => {
     this.setState({
@@ -20,11 +21,19 @@ class App extends Component {
       currentUserId: state.id
     })
   }
-  changeToGame = (id) => {
+  changeToGame = (state) => {
     this.setState({
       hasCompleteGame: true,
-      currentUserId: id,
-      playingAsBlackPlayer: true
+      currentUserId: state.userId,
+      playingAsBlackPlayer: true,
+      currentGameId: state.gameId
+    })
+  }
+  goDirectlyToGame = (state) => {
+    this.setState({
+      hasCompleteGame: true,
+      currentUserId: state.userId,
+      currentGameId: state.gameId
     })
   }
   render() {
@@ -59,7 +68,7 @@ class App extends Component {
               render={() =>{ return this.state.hasCompleteGame ?
                 (<Redirect push
                 to='/play' />)
-                 : (<Lobby appState={this.state} changeToGame={this.changeToGame} />)
+                 : (<Lobby appState={this.state} changeToGame={this.changeToGame} goDirectlyToGame={this.goDirectlyToGame} />)
                }}
             />
 

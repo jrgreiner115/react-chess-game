@@ -7,7 +7,8 @@ class Lobby extends Component {
 
     this.state = {
       games: [],
-      userId: this.props.appState.currentUserId
+      userId: this.props.appState.currentUserId,
+      gameId: null
     }
   }
 
@@ -23,12 +24,21 @@ class Lobby extends Component {
 
   createGame = (e) => {
     e.preventDefault()
-    Adapter.createGame(this.state.userId).then(json => this.getGames()).then(whatever => this.props.goToGame(this.state.userId))
+    Adapter.createGame(this.state.userId)
+    .then(json=> this.setState({
+      gameId: json.id
+    }))
+    .then(json => this.getGames())
+    .then(whatever => this.props.goDirectlyToGame(this.state))
   }
 
   joinGame = (e) => {
     e.preventDefault()
-    Adapter.joinGame(e.target.id, this.state.userId).then(whatever => this.props.changeToGame(this.state.userId))
+    Adapter.joinGame(e.target.id, this.state.userId)
+    .then(json=> this.setState({
+      gameId: json.id
+    }))
+    .then(whatever => this.props.changeToGame(this.state))
     // Adapter.joinGame(this.state.userId)
   }
 

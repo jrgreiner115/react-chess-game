@@ -27,8 +27,18 @@ export default class Board extends React.Component{
 
 //also setup
   componentDidMount(){
-    this.blackFlip()
-
+    if (this.props.appState.playingAsBlackPlayer) {
+      let arr = [
+        {id:1, previous_position: '67', new_position: '47'},
+        {id:1, previous_position: '14', new_position: '34'},
+        {id:1, previous_position: '72', new_position: '53'},
+        {id:1, previous_position: '04', new_position: '24'},
+        {id:1, previous_position: '53', new_position: '34'},
+        {id:1, previous_position: '24', new_position: '60'},
+      ]
+      this.rebuildBoard(arr)
+      this.blackFlip()
+    }
     //fetch get here
     let arr = [
       {id:1, previous_position: '67', new_position: '47'},
@@ -39,7 +49,7 @@ export default class Board extends React.Component{
       {id:1, previous_position: '24', new_position: '60'},
     ]
     //rebuilds the board with array
-    this.rebuildBoard(arr)
+
   }
 
   blackFlip(){
@@ -425,6 +435,7 @@ export default class Board extends React.Component{
   }
 
   render(){
+    console.log(this.props.appState);
     return(<div>
       <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
       <div id="gameBoard">
