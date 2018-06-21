@@ -4,7 +4,8 @@ import Adapter from './services/adapter';
 class Login extends Component {
   state ={
     name: "",
-    hasUser: false
+    hasUser: false,
+    id: null
   }
 
   handleChange = (event) => {
@@ -17,11 +18,14 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     Adapter.createUser(this.state)
-    .then(json => this.props.changeToWaitingRoom())
+    .then(json =>
+      this.setState({
+        id: json.id
+      })).then(whatever => this.props.changeToWaitingRoom(this.state))
   }
 
   render() {
-    console.log(this.props);
+    console.log("STATE", this.state, "PROPS", this.props);
     return (
       <div>
         <h1>

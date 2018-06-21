@@ -391,14 +391,10 @@ export default class Board extends React.Component{
 
     }
     //execution code ends
-
+  
     this.setState({
       lightUp: []
     })
-
-
-
-
   }
 
   dragOver(e){

@@ -4,15 +4,18 @@ import Room from './Room.js'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import Login from './Login.js'
 import WaitingRoom from './WaitingRoom'
+import Lobby from './Lobby'
 
 class App extends Component {
   state = {
     rooms: [],
-    hasUser: false
+    hasUser: false,
+    currentUserId: null
   }
-  changeToWaitingRoom = () => {
+  changeToWaitingRoom = (state) => {
     this.setState({
-      hasUser:true
+      hasUser:true,
+      currentUserId: state.id
     })
   }
   render() {
@@ -37,6 +40,10 @@ class App extends Component {
                  : (<Login changeToWaitingRoom={this.changeToWaitingRoom}
                  />)
                }}
+            />
+            <Route
+              path='/lobby'
+              render={() => <Lobby appState={this.state} />}
             />
             <Route
               path='/play'
