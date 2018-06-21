@@ -27,16 +27,14 @@ export default class Board extends React.Component{
 
 //also setup
   componentDidMount(){
-//(this.props.appState.playingAsBlackPlayer)
     fetch(`http://localhost:3001/games/${this.props.appState.currentGameId}`)
       .then( res => res.json())
       .then( res => {
-        console.log(res)
         let arr = res['moves']
         //rebuilds the board with array
         this.rebuildBoard(arr)
-        this.blackFlip()
-
+        if (this.props.appState.playingAsBlackPlayer) {
+        this.blackFlip()}
     })
 
 
@@ -462,10 +460,14 @@ export default class Board extends React.Component{
     e.preventDefault()
   }
 
+  getMove(move) {
+    
+  }
+
   render(){
     console.log(this.props.appState);
     return(<div>
-      <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
+      <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={(move) => this.getMove(move)}/>
       <div id="gameBoard">
         { this.makeBoard() }
       </div>

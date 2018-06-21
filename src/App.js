@@ -73,7 +73,7 @@ class App extends Component {
             />
 
             <Route
-              path='/play'
+              path='/play/'
               render={() =>
                 <Room appState={this.state} />
               }
