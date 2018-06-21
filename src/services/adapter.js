@@ -51,7 +51,7 @@ const createUser = (state) => {
 }
 
 const joinGame = (gameId, userId) => {
-  return fetch(`${GAME}/`, {
+  return fetch(`${GAME}/${gameId}`, {
     method: 'PATCH',
     headers,
     body: JSON.stringify({player_id_black: userId})

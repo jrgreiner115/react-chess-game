@@ -10,12 +10,21 @@ class App extends Component {
   state = {
     rooms: [],
     hasUser: false,
-    currentUserId: null
+    currentUserId: null,
+    hasCompleteGame: false,
+    playingAsBlackPlayer: false
   }
   changeToWaitingRoom = (state) => {
     this.setState({
       hasUser:true,
       currentUserId: state.id
+    })
+  }
+  changeToGame = (id) => {
+    this.setState({
+      hasCompleteGame: true,
+      currentUserId: id,
+      playingAsBlackPlayer: true
     })
   }
   render() {
@@ -41,13 +50,24 @@ class App extends Component {
                  />)
                }}
             />
+            {/* <Route
+              path='/lobby'
+              render={() => <Lobby appState={this.state} changeToGame={this.changeToGame} />}
+            /> */}
             <Route
               path='/lobby'
-              render={() => <Lobby appState={this.state} />}
+              render={() =>{ return this.state.hasCompleteGame ?
+                (<Redirect push
+                to='/play' />)
+                 : (<Lobby appState={this.state} changeToGame={this.changeToGame} />)
+               }}
             />
+
             <Route
               path='/play'
-              component={Room}
+              render={() =>
+                <Room appState={this.state} />
+              }
             />
           </Switch>
         </div>

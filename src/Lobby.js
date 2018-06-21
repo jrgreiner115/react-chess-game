@@ -11,7 +11,6 @@ class Lobby extends Component {
     }
   }
 
-
   componentDidMount() {
     this.getGames()
   }
@@ -24,12 +23,12 @@ class Lobby extends Component {
 
   createGame = (e) => {
     e.preventDefault()
-    Adapter.createGame(this.state.userId).then(json => this.getGames())
+    Adapter.createGame(this.state.userId).then(json => this.getGames()).then(whatever => this.props.goToGame(this.state.userId))
   }
 
   joinGame = (e) => {
     e.preventDefault()
-    console.log(e.target);
+    Adapter.joinGame(e.target.id, this.state.userId).then(whatever => this.props.changeToGame(this.state.userId))
     // Adapter.joinGame(this.state.userId)
   }
 
@@ -45,7 +44,7 @@ class Lobby extends Component {
 
         <h2>Join a Game</h2>
         {this.state.games.length > 0 ? this.state.games.map(game => {
-          return (<span><li>{game.id}</li><button onClick={this.joinGame}>Join Game</button></span>)
+          return (<span><li>{game.id}</li><button onClick={this.joinGame} whitePlayer={game.player_id_white} id={game.id}>Join Game </button></span>)
         }) : ""}
       </div>
     )

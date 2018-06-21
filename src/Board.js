@@ -391,7 +391,7 @@ export default class Board extends React.Component{
 
     }
     //execution code ends
-  
+
     this.setState({
       lightUp: []
     })
@@ -402,7 +402,6 @@ export default class Board extends React.Component{
   }
 
   render(){
-
     return(<div>
       <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
       <div id="gameBoard">
