@@ -461,11 +461,13 @@ export default class Board extends React.Component{
   }
 
   getMove(move) {
-    
+    console.log('CAUGHT SOCKET', move);
+    let newPosition = move.new_position
+    let prevPosition = move.previous_position
+    this.movePiece(prevPosition, newPosition)
   }
 
   render(){
-    console.log(this.props.appState);
     return(<div>
       <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={(move) => this.getMove(move)}/>
       <div id="gameBoard">
