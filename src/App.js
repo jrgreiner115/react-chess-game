@@ -18,32 +18,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div>
-          <p>login/out</p>
-        </div>
-        <h1>ChessMaster</h1>
-        <div className='room'>
-          <Switch>
-            <Route
-              path='/waiting-room'
-              component={WaitingRoom}
-            />
-            <Route
-              path='/'
-              exact
-              render={() =>{ return this.state.hasUser ?
-                (<Redirect push
-                to='/lobby' />)
-                 : (<Login changeToWaitingRoom={this.changeToWaitingRoom}
-                 />)
-               }}
-            />
-            <Route
-              path='/play'
-              component={Room}
-            />
-          </Switch>
-        </div>
+        <Room />
+
       </div>
     );
   }
