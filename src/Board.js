@@ -9,14 +9,14 @@ export default class Board extends React.Component{
 
     this.state = {
       board:[
-        ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
-        ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
         ['','','','','','','',''],
-        ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
-        ['rookW','bishopW','knightW','queenW','kingW','knightW','bishopW','rookW']
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
       ],
       selectedPiece: null,
       selectedCoords: null,
@@ -27,19 +27,28 @@ export default class Board extends React.Component{
 
 //also setup
   componentDidMount(){
-    this.blackFlip()
+
+    fetch('http://localhost:3001/games/1')
+      .then( res => res.json())
+      .then( res => {
+        console.log(res)
+        let arr = res['moves']
+        //rebuilds the board with array
+        this.rebuildBoard(arr)
+        this.blackFlip()
+
+    })
+
 
     //fetch get here
-    let arr = [
-      {id:1, previous_position: '67', new_position: '47'},
-      {id:1, previous_position: '14', new_position: '34'},
-      {id:1, previous_position: '72', new_position: '53'},
-      {id:1, previous_position: '04', new_position: '24'},
-      {id:1, previous_position: '53', new_position: '34'},
-      {id:1, previous_position: '24', new_position: '60'},
-    ]
-    //rebuilds the board with array
-    this.rebuildBoard(arr)
+    // let arr = [
+    //   {id:1, previous_position: '67', new_position: '47'},
+    //   {id:1, previous_position: '14', new_position: '34'},
+    //   {id:1, previous_position: '72', new_position: '53'},
+    //   {id:1, previous_position: '04', new_position: '24'},
+    //   {id:1, previous_position: '53', new_position: '34'},
+    //   {id:1, previous_position: '24', new_position: '60'},
+    // ]
   }
 
   blackFlip(){
@@ -55,7 +64,6 @@ export default class Board extends React.Component{
 
   blackTranslator(oldCoords){
 
-
 //YET TO TEST
 //YET TO TEST
 //YET TO TEST
@@ -67,6 +75,20 @@ export default class Board extends React.Component{
   }
 
   rebuildBoard(arr){
+    //visual effect
+    this.setState({
+      board:[
+        ['rookB','bishopB','knightB','queenB','kingB','knightB','bishopB','rookB'],
+        ['pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB','pawnB'],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['','','','','','','',''],
+        ['pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW','pawnW'],
+        ['rookW','bishopW','knightW','queenW','kingW','knightW','bishopW','rookW']
+      ],
+    })
+
     for (let i of arr){
       console.log(i)
       this.replaySingleMove(i)
@@ -410,6 +432,22 @@ export default class Board extends React.Component{
         target = this.blackTranslator(target)
         coords = this.blackTranslator(coords)
       }
+
+      //post moves here
+      fetch('http://localhost:3001/moves',{
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({
+          game_id:"1",
+          previous_position:`${coords}`,
+          new_position:`${target}`
+        })
+      })
+        .then( res => res.json())
+        .then( res => console.log(res))
 
 
     }
