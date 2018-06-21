@@ -3,8 +3,8 @@
 }
 
 .tile{
-  height:60px;
-  width:60px;
+  height:65px;
+  width:65px;
 }
 
 .black{
@@ -16,10 +16,14 @@
 }
 
 .possibleMove{
-  background-color:yellow;
+  background-color: #CDCDCD;
 }
 
 .piece{
   height:59px;
   width:59px;
+}
+
+.board {
+  justifyContent: 'center';
 }

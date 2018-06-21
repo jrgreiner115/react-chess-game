@@ -472,6 +472,7 @@ export default class Board extends React.Component{
   render(){
     return(<div>
       <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={(move) => this.getMove(move)}/>
+      <ActionCable channel={{channel: 'GameValidationChannel'}} onReceived={(game) => console.log("GAME", game)}/>
       <div id="gameBoard">
         { this.makeBoard() }
       </div>

@@ -31,9 +31,7 @@ class Room extends Component {
   render() {
     return  (
       <div>
-        <Opponent />
-        <Board appState={this.props.appState}/>
-        <User checkTurnOperator={this.turnOperator} turn={this.state.activePlayer}/>
+        <Board className='board' appState={this.props.appState}/>
       </div>
   )}
 }
