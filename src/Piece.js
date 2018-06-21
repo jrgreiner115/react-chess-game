@@ -55,7 +55,7 @@ export default class Piece extends React.Component{
                                      src={this.imageGetter(this.props.type)}
                                      alt={this.props.coords}
                                      onDragStart={ () => this.props.actionStart(this.props.coords)}
-                                     draggable={boo}
+                                     draggable={boo && this.props.turn}
                                      />
   }
 

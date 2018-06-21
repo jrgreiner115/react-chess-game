@@ -21,7 +21,8 @@ export default class Board extends React.Component{
       selectedPiece: null,
       selectedCoords: null,
       playerColor: 'W',
-      lightUp: []
+      lightUp: [],
+      turn:false
     }
   }
 
@@ -36,8 +37,13 @@ export default class Board extends React.Component{
         if (this.props.appState.playingAsBlackPlayer) {
           this.blackFlip()
         }
-    })
+        else{
+          this.setState({
+            turn:true
+          })
+        }
 
+    })
   }
 
   blackFlip(){
@@ -52,14 +58,6 @@ export default class Board extends React.Component{
   }
 
   blackTranslator(oldCoords){
-
-//YET TO TEST
-//YET TO TEST
-//YET TO TEST
-//YET TO TEST
-//YET TO TEST
-//YET TO TEST
-
     return `${7 - parseInt(oldCoords[0])}` + (7 - parseInt(oldCoords[1]))
   }
 
@@ -122,7 +120,8 @@ export default class Board extends React.Component{
         let piece = (this.state.board[x][y] === '') ? null : <Piece type={this.state.board[x][y]}
                                                                      coords={`${x}`+y}
                                                                      actionStart={this.piecePickedUp}
-                                                                     playerColor={this.state.playerColor}/>
+                                                                     playerColor={this.state.playerColor}
+                                                                     turn={this.state.turn}/>
         row.push( <td id={`${x}`+y}
                      className={ this.classHelp(x,y) }
                      onDrop={ this.piecePutDown}
@@ -452,6 +451,12 @@ export default class Board extends React.Component{
   }
 
   getMove(move) {
+
+    this.setState({
+      turn: !this.state.turn
+    })
+
+
     let newPosition = move.new_position
     let prevPosition = move.previous_position
     if (this.state.playerColor === 'B'){
