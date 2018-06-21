@@ -25,9 +25,21 @@ export default class Board extends React.Component{
     }
   }
 
-
+//also setup
   componentDidMount(){
     this.blackFlip()
+
+    //fetch get here
+    let arr = [
+      {id:1, previous_position: '67', new_position: '47'},
+      {id:1, previous_position: '14', new_position: '34'},
+      {id:1, previous_position: '72', new_position: '53'},
+      {id:1, previous_position: '04', new_position: '24'},
+      {id:1, previous_position: '53', new_position: '34'},
+      {id:1, previous_position: '24', new_position: '60'},
+    ]
+    //rebuilds the board with array
+    this.rebuildBoard(arr)
   }
 
   blackFlip(){
@@ -52,6 +64,17 @@ export default class Board extends React.Component{
 //YET TO TEST
 
     return `${7 - parseInt(oldCoords[0])}` + (7 - parseInt(oldCoords[1]))
+  }
+
+  rebuildBoard(arr){
+    for (let i of arr){
+      console.log(i)
+      this.replaySingleMove(i)
+    }
+  }
+
+  replaySingleMove(move){
+    this.movePiece(move.previous_position, move.new_position)
   }
 
 
@@ -93,12 +116,10 @@ export default class Board extends React.Component{
                      className={ this.classHelp(x,y) }
                      onDrop={ this.piecePutDown}
                      onDragOver={this.dragOver}>
-
                   {piece}
                 </td>)
       }
 
-      //add row to board
       board.push(
         <tr id={'row'+x}>
           {row}
@@ -336,9 +357,6 @@ export default class Board extends React.Component{
   }
 
   piecePickedUp = (coords) => {
-    //light up squares here
-
-    //
     let piece = this.state.board[coords[0]][coords[1]]
     this.setState({
       selectedPiece: piece,
@@ -347,6 +365,17 @@ export default class Board extends React.Component{
     this.pieceLogic(piece,coords)
   }
 
+
+  movePiece(oldPos, newPos){
+    let piece = this.state.board[oldPos[0]][oldPos[1]]
+    let board = this.state.board
+    board[newPos[0]][newPos[1]] = piece;
+    board[oldPos[0]][oldPos[1]] = ''
+
+    this.setState({
+      board: board
+    })
+  }
 
   piecePutDown = (e) => {
     // checks before move is executed
@@ -370,15 +399,9 @@ export default class Board extends React.Component{
 
     //execution code
     if (goAhead){
-      let coords = this.state.selectedCoords
-      let piece = this.state.selectedPiece
-      let board = this.state.board
-      board[target[0]][target[1]] = piece;
-      board[coords[0]][coords[1]] = ''
 
-      this.setState({
-        board: board
-      })
+      let coords = this.state.selectedCoords
+      this.movePiece(coords, target)
 
       //translates for black board cuz its flipped
       // target = new pos
