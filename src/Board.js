@@ -463,7 +463,7 @@ export default class Board extends React.Component{
     // console.log("my-color",this.state.playerColor)
     // console.log("thing color",this.state.board[newPosition[0]][newPosition[1]].slice(-1))
     // console.log(this.state.board[newPosition[0]][newPosition[1]].slice(-1) === this.state.playerColor)
-    if(!(this.state.board[newPosition[0]][newPosition[1]].slice(-1) === this.state.playerColor)){
+    if(this.state.board[prevPosition[0]][prevPosition[1]] !== ""){
       this.movePiece(prevPosition,newPosition)
     }
 
