@@ -34,19 +34,10 @@ export default class Board extends React.Component{
         //rebuilds the board with array
         this.rebuildBoard(arr)
         if (this.props.appState.playingAsBlackPlayer) {
-        this.blackFlip()}
+          this.blackFlip()
+        }
     })
 
-
-    //fetch get here
-    // let arr = [
-    //   {id:1, previous_position: '67', new_position: '47'},
-    //   {id:1, previous_position: '14', new_position: '34'},
-    //   {id:1, previous_position: '72', new_position: '53'},
-    //   {id:1, previous_position: '04', new_position: '24'},
-    //   {id:1, previous_position: '53', new_position: '34'},
-    //   {id:1, previous_position: '24', new_position: '60'},
-    // ]
   }
 
   blackFlip(){
@@ -461,10 +452,21 @@ export default class Board extends React.Component{
   }
 
   getMove(move) {
-    console.log('CAUGHT SOCKET', move);
     let newPosition = move.new_position
     let prevPosition = move.previous_position
-    this.movePiece(prevPosition, newPosition)
+    if (this.state.playerColor === 'B'){
+      newPosition = this.blackTranslator(move.new_position)
+      prevPosition = this.blackTranslator(move.previous_position)
+    }
+
+    // console.log('CAUGHT SOCKET', move);
+    // console.log("my-color",this.state.playerColor)
+    // console.log("thing color",this.state.board[newPosition[0]][newPosition[1]].slice(-1))
+    // console.log(this.state.board[newPosition[0]][newPosition[1]].slice(-1) === this.state.playerColor)
+    if(!(this.state.board[newPosition[0]][newPosition[1]].slice(-1) === this.state.playerColor)){
+      this.movePiece(prevPosition,newPosition)
+    }
+
   }
 
   render(){
