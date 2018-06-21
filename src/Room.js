@@ -32,7 +32,7 @@ class Room extends Component {
     return  (
       <div>
         <Opponent />
-        <Board />
+        <Board appState={this.props.appState}/>
         <User checkTurnOperator={this.turnOperator} turn={this.state.activePlayer}/>
       </div>
   )}

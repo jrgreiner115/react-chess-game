@@ -27,8 +27,8 @@ export default class Board extends React.Component{
 
 //also setup
   componentDidMount(){
-
-    fetch('http://localhost:3001/games/1')
+//(this.props.appState.playingAsBlackPlayer)
+    fetch(`http://localhost:3001/games/${this.props.appState.currentGameId}`)
       .then( res => res.json())
       .then( res => {
         console.log(res)
@@ -456,10 +456,6 @@ export default class Board extends React.Component{
     this.setState({
       lightUp: []
     })
-
-
-
-
   }
 
   dragOver(e){
@@ -467,7 +463,7 @@ export default class Board extends React.Component{
   }
 
   render(){
-
+    console.log(this.props.appState);
     return(<div>
       <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={() => {console.log("Got Received SOCKET")}}/>
       <div id="gameBoard">
