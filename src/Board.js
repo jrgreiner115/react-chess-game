@@ -37,11 +37,11 @@ export default class Board extends React.Component{
         if (this.props.appState.playingAsBlackPlayer) {
           this.blackFlip()
         }
-        else{
-          this.setState({
-            turn:true
-          })
-        }
+        // else{
+        //   this.setState({
+        //     turn:true
+        //   })
+        // }
 
     })
   }
@@ -451,7 +451,7 @@ export default class Board extends React.Component{
   }
 
   getMove(move) {
-
+  
     this.setState({
       turn: !this.state.turn
     })
@@ -474,10 +474,19 @@ export default class Board extends React.Component{
 
   }
 
+  startGame = (game) =>{
+    this.setState({
+      turn: true
+    })
+  }
+
   render(){
     return(<div>
-      <ActionCable channel={{channel: 'GameRoomChannel'}} onReceived={(move) => this.getMove(move)}/>
-      <ActionCable channel={{channel: 'GameValidationChannel'}} onReceived={(game) => console.log("GAME", game)}/>
+      <ActionCable
+        channel={{channel: 'GameRoomChannel'}} onReceived={(move) => this.getMove(move)}/>
+      <ActionCable
+        channel={{channel: 'GameValidationChannel'}}
+        onReceived={(game) => this.startGame(game)}/>
       <div id="gameBoard">
         { this.makeBoard() }
       </div>

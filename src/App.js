@@ -39,9 +39,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <div>
-          <p>login/out</p>
-        </div>
         <h1>ChessMaster</h1>
         <div className='room'>
           <Switch>
