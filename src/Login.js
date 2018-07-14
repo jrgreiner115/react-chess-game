@@ -28,13 +28,17 @@ class Login extends Component {
     console.log("STATE", this.state, "PROPS", this.props);
     return (
       <div>
-        <h1>
+        <h2>
           Welcome!
-        </h1>
-        <h2>Please Enter your name to Join or Create a Room.</h2>
+        </h2>
+        <h3>Please enter your name to join or create a game.</h3>
         <form onSubmit={this.handleSubmit}>
-          <input onChange={this.handleChange} type="text" name='name' value={this.state.name} />
-          <input type='submit' value='submit' name='submit' />
+          <div class="group">
+            <input onChange={this.handleChange} type="text" name='name' value={this.state.name} />
+            <span class="highlight"></span>
+            <span class="bar"></span>
+          </div>
+          <input className='btn' type='submit' value='submit' name='submit' />
         </form>
       </div>
     )

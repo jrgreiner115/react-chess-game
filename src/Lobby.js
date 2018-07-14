@@ -46,15 +46,20 @@ class Lobby extends Component {
     console.log(this.state);
     return (
       <div>
-        <h1>
+        <h2>
           Welcome!
-        </h1>
-        <h2>Create a Game</h2>
-        <button onClick={this.createGame}>Create Game</button>
+        </h2>
+        <h3>Create a game:</h3>
+        <button
+          className='btn'
+          onClick={this.createGame}>Create Game</button>
 
-        <h2>Join a Game</h2>
+        <h3>Join a game</h3>
         {this.state.games.length > 0 ? this.state.games.map(game => {
-          return (<span><li>{game.id}</li><button onClick={this.joinGame} whitePlayer={game.player_id_white} id={game.id}>Join Game </button></span>)
+          return (<span><li>{game.id}</li>
+            <button
+              className='btn'
+             onClick={this.joinGame} whitePlayer={game.player_id_white} id={game.id}>Join Game </button></span>)
         }) : ""}
       </div>
     )

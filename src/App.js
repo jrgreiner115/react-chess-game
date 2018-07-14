@@ -36,10 +36,17 @@ class App extends Component {
       currentGameId: state.gameId
     })
   }
+
+  goHome = (e) => {
+    e.preventDefault()
+  }
   render() {
     return (
       <div className="App">
-        <h1>ChessMaster</h1>
+        <div className='nav-bar'>
+          <img className='logo' onClick={this.goHome} src="/ChessMASTER.png"></img>
+        </div>
+
         <div className='room'>
           <Switch>
             <Route

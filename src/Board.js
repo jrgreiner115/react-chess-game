@@ -451,7 +451,7 @@ export default class Board extends React.Component{
   }
 
   getMove(move) {
-  
+
     this.setState({
       turn: !this.state.turn
     })
@@ -479,6 +479,7 @@ export default class Board extends React.Component{
       turn: true
     })
   }
+
 
   render(){
     return(<div>
