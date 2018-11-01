@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.5.1",
+    "merge": "^1.2.1",
     "react": "^16.4.1",
     "react-actioncable-provider": "^1.0.3",
     "react-dnd": "^4.0.5",
